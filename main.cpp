@@ -4,17 +4,25 @@
 using namespace std;
 
 int main(){
-    int val, sum = 0;
+    int val, inputs = 0, sum = 0;
 
     cout << "Enter a list of integers seperated by spaces: ";
-
-    int* num = new int;
+    
+    int* num = new int[20];
 
     while(true){
         while(cin >> val){
             if(cin.good()){
-                *num = val;
-                sum+=*num;
+                if(inputs%20==0&&inputs!=0){
+                    int* resize = new int[inputs+20];
+                    for(int i = 0; i < inputs; i++){
+                        resize[i] = num[i];
+                    }
+                    num = resize;
+                    delete[] resize;
+                }
+                num[inputs] = val;
+                inputs++;
             }
             if(cin.peek() == '\n'){
                 cout << "\nEnter more values or type a string to end input: ";
@@ -29,7 +37,14 @@ int main(){
         }
     }
 
-    delete num;
+    cout << "\nInputs in array: ";
+
+    for(int i = 0; i < inputs; i++){
+        cout << num[i] << ((i == inputs-1)?"":", ");
+        sum += num[i];
+    }
+
+    delete[] num;
 
     cout << "\n\nThe sum of all the inputs is " << sum << ".";
 
